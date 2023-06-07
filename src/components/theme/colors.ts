@@ -1,0 +1,20 @@
+let white = "#fff";
+export const colors = {
+  transparent: "transparent",
+  white,
+  background_1: white,
+  background_2: "#F5F6FA",
+  background_3: "#FAFBFC",
+  background_4: "#e5e5e5",
+  gray_1: "#b2b2b2",
+  gray_2: "#C4C4C4",
+  gray_3: "#6F767E",
+  gray_4: "#F0F0F0",
+  blue_1: "#377DFF",
+  blue_2: "#1853A9",
+  blue_3: "#56CCF2",
+  light_green: "#D7F5E7",
+  green_2: "#38CB89",
+  red_1: "#FF5630",
+  orange_1: "#FFA600",
+};
