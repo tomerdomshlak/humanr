@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Gap8VerticalFlex from "../../../../components/flex_layouts/Gap8VerticalFlex";
 import { H4 } from "../../../../components/typography/H4";
@@ -9,8 +9,17 @@ import VerticalFlex from "../../../../components/flex_layouts/VerticalFlex";
 import CandidateItem from "./CandidateItem";
 import { TableItem } from "./TableItem";
 import CandidateCheckbox from "./CandidateCheckbox";
+import { Candidate } from "./Candidate";
 
-const CandidateListContainer = () => {
+type Props = {
+  candidates: Candidate[];
+};
+
+const CandidateListContainer = ({ candidates }: Props) => {
+  const [selectedCandidateIds, setSelectedCandidateIds] = useState<string[]>(
+    []
+  );
+
   const columns = [
     "Candidate Name",
     "Rating",
@@ -19,122 +28,34 @@ const CandidateListContainer = () => {
     "Owner",
   ];
 
-  const candidates = [
-    {
-      name: "Cameron Williamson",
-      avatarImageId: 12,
-      rating: 4.9,
-      stages: { name: "Shortlist", level: 2, color: colors.blue_3 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Annette Black",
-        avatarImageId: 2,
-      },
-    },
-    {
-      name: "Savannah Nguyen",
-      avatarImageId: 13,
-      rating: 4.7,
-      stages: { name: "Interview", level: 2, color: colors.red_1 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Courtney Henry",
-        avatarImageId: 3,
-      },
-    },
-    {
-      name: "Darlene Robertson",
-      avatarImageId: 14,
-      rating: 0.0,
-      stages: { name: "New Applied", level: 3, color: colors.orange_1 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Arlene McCoy",
-        avatarImageId: 4,
-      },
-    },
-    {
-      name: "Leslie Alexander",
-      avatarImageId: 15,
-      rating: 4.9,
-      stages: { name: "Test", level: 4, color: colors.blue_1 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Jane Cooper",
-        avatarImageId: 5,
-      },
-    },
-    {
-      name: "Albert Flores",
-      avatarImageId: 16,
-      rating: 5.0,
-      stages: { name: "Design Challange", level: 5, color: colors.green_2 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Bessie Cooper",
-        avatarImageId: 6,
-      },
-    },
-    {
-      name: "Dianne Russell",
-      avatarImageId: 17,
-      rating: 0.0,
-      stages: { name: "Shortlist", level: 2, color: colors.blue_3 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Leslie Alexander",
-        avatarImageId: 7,
-      },
-    },
-    {
-      name: "Robert Fox",
-      avatarImageId: 18,
-      rating: 4.9,
-      stages: { name: "Interview", level: 3, color: colors.red_1 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Kathryn Murphy",
-        avatarImageId: 8,
-      },
-    },
-    {
-      name: "Leslie Alexander",
-      avatarImageId: 19,
-      rating: 2.4,
-      stages: { name: "Shortlist", level: 4, color: colors.blue_3 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Jenny Wilson",
-        avatarImageId: 9,
-      },
-    },
-    {
-      name: "Darrell Steward",
-      avatarImageId: 20,
-      rating: 3.9,
-      stages: { name: "Design Challange", level: 6, color: colors.green_2 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Ronald Richards",
-        avatarImageId: 10,
-      },
-    },
-    {
-      name: "Arlene McCoy",
-      avatarImageId: 21,
-      rating: 0.0,
-      stages: { name: "Shortlist", level: 2, color: colors.red_1 },
-      date: "01 March, 2022",
-      owner: {
-        name: "Devon Lane",
-        avatarImageId: 11,
-      },
-    },
-  ];
+  const allNames = candidates.map(({ name }) => name);
+  const isAllChecked = allNames.every((v) => selectedCandidateIds.includes(v));
+
+  function handleCandidateChecked(name: string) {
+    if (selectedCandidateIds.includes(name)) {
+      setSelectedCandidateIds([
+        ...selectedCandidateIds.filter((id) => id !== name),
+      ]);
+    } else {
+      setSelectedCandidateIds([...selectedCandidateIds, name]);
+    }
+  }
+
+  const handleMainCheckboxChanged = () => {
+    if (isAllChecked) {
+      setSelectedCandidateIds([]);
+    } else {
+      setSelectedCandidateIds([...allNames]);
+    }
+  };
+
   return (
     <Gap8VerticalFlex>
       <TableHeader>
-        <CandidateCheckbox />
+        <CandidateCheckbox
+          isChecked={isAllChecked}
+          onChange={handleMainCheckboxChanged}
+        />
         {columns.map((column) => (
           <TableHeaderTitle>
             <TableHeaderText>{column}</TableHeaderText>
@@ -145,19 +66,14 @@ const CandidateListContainer = () => {
         ))}
       </TableHeader>
       <TableList>
-        {candidates.map(
-          ({ name, avatarImageId, rating, stages, date, owner }) => (
-            <CandidateItem
-              key={name}
-              name={name}
-              avatarImageId={avatarImageId}
-              rating={rating}
-              stages={stages}
-              date={date}
-              owner={owner}
-            />
-          )
-        )}
+        {candidates.map((candidate) => (
+          <CandidateItem
+            key={candidate.name}
+            candidate={candidate}
+            isChecked={selectedCandidateIds.includes(candidate.name)}
+            onChecked={() => handleCandidateChecked(candidate.name)}
+          />
+        ))}
       </TableList>
     </Gap8VerticalFlex>
   );

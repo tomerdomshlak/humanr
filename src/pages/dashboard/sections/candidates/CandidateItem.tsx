@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { TableItem } from "./TableItem";
-import { Avatar, Checkbox } from "@mui/material";
 import CandidateCheckbox from "./CandidateCheckbox";
 import { H4 } from "../../../../components/typography/H4";
 import HorizontalFlex from "../../../../components/flex_layouts/HorizontalFlex";
@@ -9,38 +8,19 @@ import VerticalFlex from "../../../../components/flex_layouts/VerticalFlex";
 import { colors } from "../../../../components/theme/colors";
 import { TableColumn } from "./TableColumn";
 import CandidateName from "./CandidateName";
-
-type Stages = {
-  name: string;
-  color: string;
-  level: number;
-};
-
-type Owner = {
-  name: string;
-  avatarImageId: number;
-};
+import { Candidate } from "./Candidate";
 
 type Props = {
-  name: string;
-  avatarImageId: number;
-  rating: number;
-  stages: Stages;
-  date: string;
-  owner: Owner;
+  candidate: Candidate;
+  onChecked: Function;
+  isChecked: boolean;
 };
 
-const CandidateItem = ({
-  name,
-  avatarImageId,
-  rating,
-  stages,
-  date,
-  owner,
-}: Props) => {
+const CandidateItem = ({ candidate, onChecked, isChecked }: Props) => {
+  const { name, avatarImageId, rating, stages, date, owner } = candidate;
   return (
     <LayoutRoot>
-      <CandidateCheckbox />
+      <CandidateCheckbox isChecked={isChecked} onChange={onChecked} />
       <CandidateName name={name} avatarImageId={avatarImageId} />
       <RatingContainer>
         <img src="/magic-star-1.svg" alt="Rating Icon" />

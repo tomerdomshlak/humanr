@@ -1,9 +1,18 @@
 import React from "react";
 import { Checkbox } from "@mui/material";
 
-const CandidateCheckbox = ({ ...props }) => {
+type Props = {
+  isChecked: boolean;
+  onChange: Function;
+};
+
+const CandidateCheckbox = ({ isChecked, onChange }: Props) => {
   return (
-    <Checkbox defaultChecked sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }} />
+    <Checkbox
+      checked={isChecked}
+      sx={{ "& .MuiSvgIcon-root": { fontSize: 16 } }}
+      onChange={() => onChange()}
+    />
   );
 };
 
