@@ -60,5 +60,6 @@ const LayoutRoot = styled(VerticalFlex)`
 `;
 
 const Image = styled.img`
+  cursor: pointer;
   margin: 0 32px;
 `;
